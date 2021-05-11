@@ -11,3 +11,6 @@ This project is a starting point for the WithU test. Please complete the followi
 - Implement a realtime listener on the Firstore database. Please rename your collection to something unique like your name. Head to lib -> non_ui -> firebase_manager and replace the tasksRef collection
 - This listener should update a Provider model which in turn updates the UI. Therefore you should be able to complete a task on the 'Tasks' page and it appears on the 'Completed Tasks' page
 - Add any additional functionality / cleanup you think would improve the app
+
+### PLEASE NOTE
+- Please run on an iOS simulator as i have only added an iOS Firebase  project
