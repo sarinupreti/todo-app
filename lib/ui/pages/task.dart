@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withu_todo/non_ui/provider/tasks.dart';
 import 'package:withu_todo/non_ui/jsonclasses/task.dart';
+import 'package:withu_todo/non_ui/utils.dart';
 
 class TaskPage extends StatelessWidget {
   TaskPage({this.task});
@@ -65,14 +66,18 @@ class __TaskFormState extends State<_TaskForm> {
       if (widget.task == null) {
         final data = task.copyWith(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
-          title: _titleController.text,
-          description: _descriptionController.text,
+          title: _titleController.text.trim(),
+          description: _descriptionController.text.trim(),
         );
 
         provider.addATask(data);
+
+        Utlis.showSnackbar(context, "Added task successful");
       } else {
-        provider.updateTask(
-            widget.task, _titleController.text, _descriptionController.text);
+        provider.updateTask(widget.task, _titleController.text.trim(),
+            _descriptionController.text.trim());
+
+        Utlis.showSnackbar(context, "Update task successful");
       }
 
       Navigator.of(context).pop();

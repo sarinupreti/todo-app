@@ -14,17 +14,18 @@ class FirebaseManager {
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
   CollectionReference get tasksRef =>
-      FirebaseFirestore.instance.collection('HUMAN101');
+      FirebaseFirestore.instance.collection('SARIN_UPRETI');
 
-  DocumentReference get documentRef =>
-      FirebaseFirestore.instance.collection('HUMAN101').doc();
+  DocumentReference get documentRef => tasksRef.doc();
 
+  ///add task in firestore
   Future<void> createTask(Task task) async {
     final updatedId = task.copyWith(id: documentRef.id);
     await tasksRef.doc(updatedId.id).set(updatedId.toJson());
     return tasksRef.id;
   }
 
+  ///read tasks from firestore
   Stream<List<Task>> readTasks() {
     Stream<QuerySnapshot> stream = tasksRef.snapshots();
 
@@ -32,16 +33,18 @@ class FirebaseManager {
         (qShot) => qShot.docs.map((doc) => Task.fromJson(doc.data())).toList());
   }
 
-  //
+  ///update existing tasks from firestore
   Future updateTask(Task task) async {
     final document = tasksRef.doc(task.id);
     await document.update(task.toJson());
   }
 
-  //
+  ///delete tasks from firestore
   Future deleteTask(Task task) async {
     final document = tasksRef.doc(task.id);
-    await document.delete();
+    await document.delete().then((value) {
+      return value;
+    }).onError((error, stackTrace) => {print(error)});
   }
 
   //
