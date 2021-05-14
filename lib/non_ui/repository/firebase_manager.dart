@@ -20,31 +20,45 @@ class FirebaseManager {
 
   ///add task in firestore
   Future<void> createTask(Task task) async {
-    final updatedId = task.copyWith(id: documentRef.id);
-    await tasksRef.doc(updatedId.id).set(updatedId.toJson());
-    return tasksRef.id;
+    try {
+      final updatedId = task.copyWith(id: documentRef.id);
+      await tasksRef.doc(updatedId.id).set(updatedId.toJson());
+      return tasksRef.id;
+    } catch (e) {
+      print(e);
+    }
   }
 
   ///read tasks from firestore
+  // ignore: missing_return
   Stream<List<Task>> readTasks() {
-    Stream<QuerySnapshot> stream = tasksRef.snapshots();
-
-    return stream.map(
-        (qShot) => qShot.docs.map((doc) => Task.fromJson(doc.data())).toList());
+    try {
+      Stream<QuerySnapshot> stream = tasksRef.snapshots();
+      return stream.map((qShot) =>
+          qShot.docs.map((doc) => Task.fromJson(doc.data())).toList());
+    } catch (e) {
+      print(e);
+    }
   }
 
   ///update existing tasks from firestore
   Future updateTask(Task task) async {
-    final document = tasksRef.doc(task.id);
-    await document.update(task.toJson());
+    try {
+      final document = tasksRef.doc(task.id);
+      await document.update(task.toJson());
+    } catch (e) {
+      print(e);
+    }
   }
 
   ///delete tasks from firestore
   Future deleteTask(Task task) async {
-    final document = tasksRef.doc(task.id);
-    await document.delete().then((value) {
-      return value;
-    }).onError((error, stackTrace) => {print(error)});
+    try {
+      final document = tasksRef.doc(task.id);
+      await document.delete();
+    } catch (e) {
+      print(e);
+    }
   }
 
   //
