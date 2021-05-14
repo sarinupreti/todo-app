@@ -13,25 +13,36 @@ class FirebaseManager {
 
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
-  //TODO: change collection name to something unique
   CollectionReference get tasksRef =>
-      FirebaseFirestore.instance.collection('tasks');
+      FirebaseFirestore.instance.collection('HUMAN101');
 
-  //TODO: replace mock data. Remember to set the task id to the firebase object id
-  List<Task> get tasks => mockData.map((t) => Task.fromJson(t)).toList();
+  DocumentReference get documentRef =>
+      FirebaseFirestore.instance.collection('HUMAN101').doc();
 
-  //TODO: implement firestore CRUD functions here
-  void addTask(Task task) {
-    tasksRef.add(task.toJson());
+  Future<void> createTask(Task task) async {
+    final updatedId = task.copyWith(id: documentRef.id);
+    await tasksRef.doc(updatedId.id).set(updatedId.toJson());
+    return tasksRef.id;
   }
+
+  Stream<List<Task>> readTasks() {
+    Stream<QuerySnapshot> stream = tasksRef.snapshots();
+
+    return stream.map(
+        (qShot) => qShot.docs.map((doc) => Task.fromJson(doc.data())).toList());
+  }
+
+  //
+  Future updateTask(Task task) async {
+    final document = tasksRef.doc(task.id);
+    await document.update(task.toJson());
+  }
+
+  //
+  Future deleteTask(Task task) async {
+    final document = tasksRef.doc(task.id);
+    await document.delete();
+  }
+
+  //
 }
-
-List<Map<String, dynamic>> mockData = [
-  {"id": "1", "title": "Task 1", "description": "Task 1 description"},
-  {
-    "id": "2",
-    "title": "Task 2",
-    "description": "Task 2 description",
-    "completed_at": DateTime.now().toIso8601String()
-  }
-];

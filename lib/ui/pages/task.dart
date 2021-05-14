@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withu_todo/non_ui/provider/tasks.dart';
-import 'package:withu_todo/non_ui/repository/firebase_manager.dart';
 import 'package:withu_todo/non_ui/jsonclasses/task.dart';
 
 class TaskPage extends StatelessWidget {
@@ -58,10 +57,6 @@ class __TaskFormState extends State<_TaskForm> {
   }
 
   void _save(BuildContext context) {
-    //TODO implement save to firestore
-
-    print(widget.task);
-
     final isValid = _formKey.currentState.validate();
 
     if (isValid) {
@@ -75,7 +70,6 @@ class __TaskFormState extends State<_TaskForm> {
         );
 
         provider.addATask(data);
-        // FirebaseManager.shared.addTask(task);
       } else {
         provider.updateTask(
             widget.task, _titleController.text, _descriptionController.text);

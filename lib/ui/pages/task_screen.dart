@@ -35,6 +35,7 @@ class TaskScreen extends StatelessWidget {
               child: Text('Add your first task'),
             )
           : ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               itemCount: tasks.length,
               itemBuilder: (context, index) {
                 return _Task(
@@ -55,14 +56,12 @@ class _Task extends StatelessWidget {
     final provider = Provider.of<TaskProvider>(context, listen: false);
     provider.deleteATask(task);
     Utlis.showSnackbar(context, "Deleted task successful");
-    //TODO implement delete to firestore
   }
 
   _toggleComplete(BuildContext context) {
     final provider = Provider.of<TaskProvider>(context, listen: false);
     provider.isCompleted(task);
     Utlis.showSnackbar(context, "Updated task successful");
-    //TODO implement toggle complete to firestore
   }
 
   void _view(BuildContext context) {
@@ -74,47 +73,22 @@ class _Task extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      direction: DismissDirection.endToStart,
-      confirmDismiss: (DismissDirection direction) async {
-        if (direction == DismissDirection.endToStart) {
-          _delete(context);
-          return true;
-        } else {
-          return null;
-        }
-      },
-      background: Container(
-        color: Colors.red,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "REMOVE".toUpperCase(),
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.right,
-              )),
+    return ListTile(
+      leading: IconButton(
+        icon: Icon(
+          task.isCompleted ? Icons.check_box : Icons.check_box_outline_blank,
         ),
+        onPressed: () => _toggleComplete(context),
       ),
-      key: UniqueKey(),
-      child: ListTile(
-        leading: IconButton(
-          icon: Icon(
-            task.isCompleted ? Icons.check_box : Icons.check_box_outline_blank,
-          ),
-          onPressed: () => _toggleComplete(context),
+      title: Text(task.title),
+      subtitle: Text(task.description),
+      trailing: IconButton(
+        icon: Icon(
+          Icons.delete,
         ),
-        title: Text(task.title),
-        subtitle: Text(task.description),
-        // trailing: IconButton(
-        //   icon: Icon(
-        //     Icons.delete,
-        //   ),
-        //   onPressed: _delete,
-        // ),
-        onTap: () => _view(context),
+        onPressed: () => _delete(context),
       ),
+      onTap: () => _view(context),
     );
   }
 }
