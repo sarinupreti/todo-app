@@ -72,12 +72,12 @@ class __TaskFormState extends State<_TaskForm> {
 
         provider.addATask(data);
 
-        Utlis.showSnackbar(context, "Added task successful");
+        // Utlis.showSnackbar(context, "Added task successful");
       } else {
         provider.updateTask(widget.task, _titleController.text.trim(),
             _descriptionController.text.trim());
 
-        Utlis.showSnackbar(context, "Update task successful");
+        // Utlis.showSnackbar(context, "Update task successful");
       }
 
       Navigator.of(context).pop();

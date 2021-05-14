@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:withu_todo/non_ui/globals/navigation.dart';
 import 'package:withu_todo/non_ui/jsonclasses/task.dart';
 import 'package:withu_todo/non_ui/repository/firebase_manager.dart';
+import 'package:withu_todo/non_ui/utils.dart';
 
 class TaskProvider extends ChangeNotifier {
   List<Task> _tasks = [];
@@ -25,18 +27,33 @@ class TaskProvider extends ChangeNotifier {
 
   //add a task
   void addATask(Task task) {
-    FirebaseManager.shared.createTask(task);
+    FirebaseManager.shared.createTask(task).then((value) {
+      Utlis.showSnackbar(
+          globalNavigatorKey.currentState.context, "Added task successful");
+    }).onError((error, stackTrace) {
+      Utlis.showSnackbar(
+          globalNavigatorKey.currentState.context, error.toString());
+    });
   }
 
   //delete a task
 
   void deleteATask(Task task) {
-    FirebaseManager.shared.deleteTask(task);
+    FirebaseManager.shared.deleteTask(task).then((value) {
+      Utlis.showSnackbar(
+          globalNavigatorKey.currentState.context, "Deleted task successful");
+    }).onError((error, stackTrace) {
+      Utlis.showSnackbar(
+          globalNavigatorKey.currentState.context, error.toString());
+    });
   }
 
   bool isCompleted(Task task) {
     task.toggleComplete();
-    FirebaseManager.shared.updateTask(task);
+    FirebaseManager.shared.updateTask(task).onError((error, stackTrace) {
+      Utlis.showSnackbar(
+          globalNavigatorKey.currentState.context, error.toString());
+    });
 
     return task.isCompleted;
   }
@@ -46,6 +63,12 @@ class TaskProvider extends ChangeNotifier {
     task.title = title;
     task.description = description;
 
-    FirebaseManager.shared.updateTask(task);
+    FirebaseManager.shared.updateTask(task).then((value) {
+      Utlis.showSnackbar(
+          globalNavigatorKey.currentState.context, "Updated task successful");
+    }).onError((error, stackTrace) {
+      Utlis.showSnackbar(
+          globalNavigatorKey.currentState.context, error.toString());
+    });
   }
 }

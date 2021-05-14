@@ -55,13 +55,12 @@ class _Task extends StatelessWidget {
   void _delete(BuildContext context) {
     final provider = Provider.of<TaskProvider>(context, listen: false);
     provider.deleteATask(task);
-    Utlis.showSnackbar(context, "Deleted task successful");
   }
 
   _toggleComplete(BuildContext context) {
     final provider = Provider.of<TaskProvider>(context, listen: false);
     provider.isCompleted(task);
-    Utlis.showSnackbar(context, "Updated task successful");
+    // Utlis.showSnackbar(context, "Updated task successful");
   }
 
   void _view(BuildContext context) {

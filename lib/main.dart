@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:withu_todo/non_ui/globals/navigation.dart';
 import 'package:withu_todo/non_ui/provider/tasks.dart';
 import 'package:withu_todo/non_ui/repository/firebase_manager.dart';
 import 'package:withu_todo/ui/pages/home.dart';
@@ -97,7 +98,8 @@ class App extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => TaskProvider(),
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        scaffoldMessengerKey: globalScafoldMessengerKey,
+        navigatorKey: globalNavigatorKey,
         title: title,
         theme: customTheme(),
         home: HomeTabsPage(),

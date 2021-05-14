@@ -57,7 +57,7 @@ class FirebaseManager {
       final document = tasksRef.doc(task.id);
       await document.delete();
     } catch (e) {
-      print(e);
+      throw e;
     }
   }
 
