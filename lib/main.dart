@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:withu_todo/non_ui/firebase_manager.dart';
+import 'package:provider/provider.dart';
+import 'package:withu_todo/non_ui/provider/tasks.dart';
+import 'package:withu_todo/non_ui/repository/firebase_manager.dart';
 import 'package:withu_todo/ui/pages/home.dart';
 import 'package:withu_todo/ui/widgets/error_widget.dart';
 
@@ -92,10 +94,13 @@ class _FirebaseAppState extends State<FirebaseApp> {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: title,
-      home: HomeTabsPage(),
+    return ChangeNotifierProvider(
+      create: (context) => TaskProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: title,
+        home: HomeTabsPage(),
+      ),
     );
   }
 }

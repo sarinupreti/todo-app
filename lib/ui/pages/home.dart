@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:withu_todo/non_ui/firebase_manager.dart';
-import 'package:withu_todo/ui/pages/tasks.dart';
+import 'package:provider/provider.dart';
+import 'package:withu_todo/non_ui/provider/tasks.dart';
+import 'package:withu_todo/ui/pages/task_screen.dart';
 
 class HomeTabsPage extends StatefulWidget {
   @override
@@ -18,15 +19,21 @@ class _HomeTabsPageState extends State<HomeTabsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<TaskProvider>(context);
+
+    final data = provider.tasks;
+    final completedData = provider.completedTasks;
+
     List<Widget> children = [
-      TasksPage(
-        title: 'All Tasks',
-        tasks: FirebaseManager.shared.tasks,
-      ),
-      TasksPage(
+      TaskScreen(
+          title: 'All Tasks',
+          // tasks: FirebaseManager.shared.tasks
+          tasks: data),
+      TaskScreen(
         title: 'Completed Tasks',
-        tasks:
-            FirebaseManager.shared.tasks.where((t) => t.isCompleted).toList(),
+        // tasks:
+        // FirebaseManager.shared.tasks.where((t) => t.isCompleted).toList(),
+        tasks: completedData,
       )
     ];
 

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:withu_todo/non_ui/firebase_manager.dart';
+import 'package:provider/provider.dart';
+import 'package:withu_todo/non_ui/provider/tasks.dart';
+import 'package:withu_todo/non_ui/repository/firebase_manager.dart';
 import 'package:withu_todo/non_ui/jsonclasses/task.dart';
 
 class TaskPage extends StatelessWidget {
@@ -36,6 +38,8 @@ class __TaskFormState extends State<_TaskForm> {
   TextEditingController _titleController;
   TextEditingController _descriptionController;
 
+  final _formKey = GlobalKey<FormState>();
+
   void init() {
     if (task == null) {
       task = Task();
@@ -56,8 +60,29 @@ class __TaskFormState extends State<_TaskForm> {
   void _save(BuildContext context) {
     //TODO implement save to firestore
 
-    FirebaseManager.shared.addTask(task);
-    Navigator.of(context).pop();
+    print(widget.task);
+
+    final isValid = _formKey.currentState.validate();
+
+    if (isValid) {
+      final provider = Provider.of<TaskProvider>(context, listen: false);
+
+      if (widget.task == null) {
+        final data = task.copyWith(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          title: _titleController.text,
+          description: _descriptionController.text,
+        );
+
+        provider.addATask(data);
+        // FirebaseManager.shared.addTask(task);
+      } else {
+        provider.updateTask(
+            widget.task, _titleController.text, _descriptionController.text);
+      }
+
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -65,49 +90,64 @@ class __TaskFormState extends State<_TaskForm> {
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.all(_padding),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Title',
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CupertinoFormSection(
+                backgroundColor: CupertinoColors.extraLightBackgroundGray,
+                children: <Widget>[
+                  CupertinoTextFormFieldRow(
+                    prefix: Text("Title"),
+                    controller: _titleController,
+                    placeholder: 'Enter a title',
+                    enableInteractiveSelection: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please, enter your tiltle for task.';
+                      }
+
+                      return null;
+                    },
+                  ),
+                  CupertinoTextFormFieldRow(
+                    prefix: Text("Description"),
+                    controller: _descriptionController,
+                    expands: true,
+                    maxLines: null,
+                    minLines: null,
+                    placeholder: 'Enter a description',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please, enter your description for task.';
+                      }
+
+                      return null;
+                    },
+                  ),
+                  CupertinoFormRow(
+                    prefix: Text('Completed'),
+                    child: CupertinoSwitch(
+                      value: task.isCompleted,
+                      onChanged: (_) {
+                        setState(() {
+                          task.toggleComplete();
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: _padding),
-            TextField(
-              controller: _descriptionController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Description',
-              ),
-              minLines: 5,
-              maxLines: 10,
-            ),
-            SizedBox(height: _padding),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Complete'),
-                CupertinoSwitch(
-                  value: task.isCompleted,
-                  onChanged: (_) {
-                    setState(() {
-                      task.toggleComplete();
-                    });
-                  },
+              Spacer(),
+              ElevatedButton(
+                onPressed: () => _save(context),
+                child: Container(
+                  width: double.infinity,
+                  child: Center(child: Text(task.isNew ? 'Create' : 'Update')),
                 ),
-              ],
-            ),
-            Spacer(),
-            ElevatedButton(
-              onPressed: () => _save(context),
-              child: Container(
-                width: double.infinity,
-                child: Center(child: Text(task.isNew ? 'Create' : 'Update')),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
