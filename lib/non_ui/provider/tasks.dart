@@ -7,19 +7,20 @@ class TaskProvider extends ChangeNotifier {
 
 //getter method for all tasks
   List<Task> get tasks => _tasks != null
-      ? _tasks.where((element) => element.isCompleted == false).toList()
+      ? _tasks.where((element) => !element.isCompleted).toList()
       : [];
 
   //getter method for completed tasks
   List<Task> get completedTasks => _tasks != null
-      ? _tasks.where((element) => element.isCompleted == true).toList()
+      ? _tasks.where((element) => element.isCompleted).toList()
       : [];
 
   void setTasks(List<Task> tasks) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _tasks = tasks;
-      notifyListeners();
-    });
+    if (tasks != null)
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _tasks = tasks;
+        notifyListeners();
+      });
   }
 
   //add a task
