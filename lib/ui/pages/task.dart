@@ -92,13 +92,21 @@ class __TaskFormState extends State<_TaskForm> {
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CupertinoFormSection(
                 backgroundColor: CupertinoColors.extraLightBackgroundGray,
                 children: <Widget>[
                   CupertinoTextFormFieldRow(
-                    prefix: Text("Title"),
+                    prefix: Text(
+                      "Title : ",
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
                     controller: _titleController,
+                    style: Theme.of(context).textTheme.subtitle2,
                     placeholder: 'Enter a title',
                     enableInteractiveSelection: true,
                     validator: (value) {
@@ -110,10 +118,17 @@ class __TaskFormState extends State<_TaskForm> {
                     },
                   ),
                   CupertinoTextFormFieldRow(
-                    prefix: Text("Description"),
+                    prefix: Text(
+                      "Description : ",
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
                     controller: _descriptionController,
                     expands: true,
                     maxLines: null,
+                    style: Theme.of(context).textTheme.subtitle2,
                     minLines: null,
                     placeholder: 'Enter a description',
                     validator: (value) {
@@ -125,7 +140,13 @@ class __TaskFormState extends State<_TaskForm> {
                     },
                   ),
                   CupertinoFormRow(
-                    prefix: Text('Completed'),
+                    prefix: Text(
+                      'Completed',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
                     child: CupertinoSwitch(
                       value: task.isCompleted,
                       onChanged: (_) {
@@ -137,7 +158,6 @@ class __TaskFormState extends State<_TaskForm> {
                   ),
                 ],
               ),
-              Spacer(),
               ElevatedButton(
                 onPressed: () => _save(context),
                 child: Container(

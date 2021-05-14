@@ -80,8 +80,14 @@ class _Task extends StatelessWidget {
         ),
         onPressed: () => _toggleComplete(context),
       ),
-      title: Text(task.title),
-      subtitle: Text(task.description),
+      title: Text(
+        task.title,
+        style: Theme.of(context).textTheme.headline6,
+      ),
+      subtitle: Text(
+        task.description,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
       trailing: IconButton(
         icon: Icon(
           Icons.delete,

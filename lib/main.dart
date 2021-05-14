@@ -99,6 +99,56 @@ class App extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: title,
+        theme: ThemeData(
+          textTheme: TextTheme(
+            headline1: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 30,
+                fontWeight: FontWeight.w700),
+            headline2: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 24,
+                fontWeight: FontWeight.w700),
+            headline3: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 22,
+                fontWeight: FontWeight.w700),
+            headline4: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 20,
+                fontWeight: FontWeight.w700),
+            headline5: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 18,
+                fontWeight: FontWeight.w700),
+            headline6: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 16,
+                fontWeight: FontWeight.w700),
+            subtitle1: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
+            subtitle2: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 14,
+                fontWeight: FontWeight.w500),
+            bodyText1: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 12,
+                fontWeight: FontWeight.w500),
+            bodyText2: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 10,
+                fontWeight: FontWeight.w500),
+            button: TextStyle(
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w700,
+                fontSize: 14),
+            caption: TextStyle(fontFamily: "Poppins"),
+            overline: TextStyle(fontFamily: "Poppins"),
+          ),
+        ),
         home: HomeTabsPage(),
       ),
     );
