@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withu_todo/non_ui/provider/tasks.dart';
 import 'package:withu_todo/non_ui/jsonclasses/task.dart';
-import 'package:withu_todo/non_ui/utils.dart';
 
 class TaskPage extends StatelessWidget {
   TaskPage({this.task});

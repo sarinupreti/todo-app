@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withu_todo/non_ui/jsonclasses/task.dart';
 import 'package:withu_todo/non_ui/provider/tasks.dart';
-import 'package:withu_todo/non_ui/utils.dart';
 import 'package:withu_todo/ui/pages/task.dart';
 
 class TaskScreen extends StatelessWidget {
